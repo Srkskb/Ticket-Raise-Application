@@ -6,8 +6,10 @@ import Zocial from 'react-native-vector-icons/Zocial';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Snack from '../../utils/snack';
-
-
+import axios from 'axios';
+import { Wave } from 'react-native-animated-spinkit';
+import { showMessage, hideMessage } from "react-native-flash-message";
+import * as Animatable from 'react-native-animatable';
 
 class Register extends React.Component {
     constructor(props) {
@@ -17,8 +19,14 @@ class Register extends React.Component {
             iseye: '',
             email: '',
             password: '',
-            name: '',
-            company: '',
+            firstname: '',
+            username: '',
+            companysrc:'',
+            lastname:'',
+            phone:'',
+            showPop:false,
+            loading:false,
+
 
         }
     }
@@ -30,13 +38,60 @@ class Register extends React.Component {
     signin() {
         this.props.navigation.navigate('Login')
     }
-
+    goHome(){
+        this.setState({showPop:false,lastname:"",firstname:"",email:"",password:"",companysrc:"",phone:"",username:""})
+        this.props.navigation.navigate('Login')
+      }
     handleeye() {
         let { visible, iseye } = this.state;
         this.setState({ visible: !visible })
         this.setState({ iseye: !iseye })
     }
-
+ Register(){
+    var data = JSON.stringify({
+        "CompanySRC": this.state.companysrc,
+        "UserName": this.state.username,
+        "FirstName": this.state.firstname,
+        "LastName": this.state.lastname,
+        "PhoneNumber": this.state.phone,
+        "EmailID": this.state.email,
+        "Paasowrd": this.state.password
+      });
+      
+      var config = {
+        method: 'post',
+        url: 'https://bus.kibtechnologies.com/tickets-crm/api/V1/Client-user-registration/',
+        headers: { 
+          'Authorization': 'Bearer BSNHKOhsmkTYowokmamskM001GAT', 
+          'Content-Type': 'application/json', 
+          'Cookie': 'PHPSESSID=1002d64bb7d6549e3f1804a22492950f'
+        },
+        data : data
+      };
+      
+      axios(config)
+      .then(function (response) {
+        // console.log(response.data.Message)
+        // this.setState({loading:false})
+         if(response.data.message=="success"){
+          console.log("Register SuccessFully")
+        }
+      })
+      .catch(function (error) {
+        showMessage({
+                    message: "YogiX",
+                    description:'Error',
+                    type: "danger",
+                textStyle:{fontFamily:'Poppins-Medium',color: '#fdfdfd'},
+                titleStyle:{fontFamily:'Poppins-SemiBold',color: '#fdfdfd'}
+                            });
+      });
+      
+        }
+        goHome(){
+          this.setState({showPop:false,lastName:"",firstName:"",email:"",password:"",confirmPassword:""})
+          this.props.navigation.navigate('Login')
+        }
   
 
     continue() {
@@ -72,10 +127,25 @@ class Register extends React.Component {
 
 
     render() {
+
         let { iseye, visible, iseyeone, visibleone } = this.state
         return (
             <View style={style.mainview}>
                 <StatusBar backgroundColor={Colors.colormaincolour} />
+                {this.state.showPop? <Animatable.View animation="flipInX" style={{position: 'absolute',width:'100%',height:'100%',
+      backgroundColor: 'rgba(253, 253, 253, 0.9)',justifyContent:'center',alignItems:'center',zIndex: 5}}>
+    <View elevation={5} style={{width:'84%',backgroundColor: '#fdfdfd',padding:20,borderRadius: 4}}>
+    <Text style={{color: '#121212',fontSize:22,fontFamily: "Poppins-SemiBold",marginVertical:6}}>
+    YogiX</Text>
+    <Text style={{color: '#121212',fontSize:18,fontFamily: "Poppins-Regular",marginVertical:6}}>
+    Signup Success, Welcome to YogiX</Text>
+    <View style={{flexDirection: 'row',justifyContent:'flex-end',alignItems:'center',paddingTop:10 }}>
+    <TouchableOpacity onPress={()=>this.goHome()}
+                style={{paddingHorizontal:12,paddingVertical:2,justifyContent:'center',alignItems:'center' }}>
+                <Text style={{fontSize: 20,color:'#90CDD1',
+                fontFamily: "Poppins-SemiBold"}}>Ok</Text></TouchableOpacity>  
+    </View>
+    </View></Animatable.View>:null}
                 <View style={style.secview}>
                     <View style={style.loginview}>
                         <Text style={style.textlogin}>Sign Up</Text>
@@ -83,7 +153,8 @@ class Register extends React.Component {
                     <ScrollView>
                     <View style={style.flexpass}>
                                 <TextInput placeholder='Enter Company CSR No' placeholderTextColor={Colors.colorred}
-                                    onChangeText={(company) => this.setState({ company: company })}
+                                      onChangeText={(text) => this.setState({companysrc: text})}
+                                      value={this.state.companysrc}
                                     style={style.textinputself}
                                 />
                                 <View style={style.iconset}>
@@ -93,7 +164,8 @@ class Register extends React.Component {
                         <View style={{ }}>
                             <View style={style.flexpass}>
                                 <TextInput placeholder='User Name' placeholderTextColor={Colors.colorred}
-                                    onChangeText={(name) => this.setState({ name: name })}
+                                      onChangeText={(text) => this.setState({username: text})}
+                                      value={this.state.username}
                                     style={style.textinputself}
                                 />
                                 <View style={style.iconset}>
@@ -102,7 +174,8 @@ class Register extends React.Component {
                             </View>
                             <View style={style.flexpass}>
                                 <TextInput placeholder='First Name' placeholderTextColor={Colors.colorred}
-                                    onChangeText={(name) => this.setState({ name: name })}
+                                       onChangeText={(text) => this.setState({firstname: text})}
+                                       value={this.state.firstname}
                                     style={style.textinputself}
                                 />
                                 <View style={style.iconset}>
@@ -111,7 +184,8 @@ class Register extends React.Component {
                             </View>
                             <View style={style.flexpass}>
                                 <TextInput placeholder='Last Name' placeholderTextColor={Colors.colorred}
-                                    onChangeText={(name) => this.setState({ name: name })}
+                                      onChangeText={(text) => this.setState({lastname: text})}
+                                      value={this.state.lastname}
                                     style={style.textinputself}
                                 />
                                 <View style={style.iconset}>
@@ -121,7 +195,8 @@ class Register extends React.Component {
                             <View style={style.flexpass}>
                                 <TextInput placeholder='Phone' placeholderTextColor={Colors.colorred}
                                     secureTextEntry={visibleone}
-                                    onChangeText={(cpassword) => this.setState({ cpassword: cpassword })}
+                                    onChangeText={(text) => this.setState({phone: text})}
+                                    value={this.state.phone}
                                     style={style.textinputself}
                                 />
                                 <TouchableOpacity style={style.iconset}>
@@ -131,7 +206,8 @@ class Register extends React.Component {
 
                             <View style={style.flexpass}>
                                 <TextInput placeholder='Email' placeholderTextColor={Colors.colorred}
-                                    onChangeText={(email) => this.setState({ email: email })}
+                                      onChangeText={(text) => this.setState({email: text})}
+                                      value={this.state.email}
                                     style={style.textinputself}
                                 />
                                 <View style={style.iconset}>
@@ -142,7 +218,8 @@ class Register extends React.Component {
                             <View style={style.flexpass}>
                                 <TextInput placeholder='Password' placeholderTextColor={Colors.colorred}
                                     secureTextEntry={visible}
-                                    onChangeText={(password) => this.setState({ password: password })}
+                                    onChangeText={(text) => this.setState({password: text})}
+                                    value={this.state.password}
                                     style={style.textinputself}
                                 />
                                 <TouchableOpacity onPress={() => this.handleeye()} style={style.iconset}>
@@ -150,7 +227,7 @@ class Register extends React.Component {
                                 </TouchableOpacity>
                             </View>
                           
-                            <TouchableOpacity onPress={() => this.continue()}
+                            <TouchableOpacity onPress={()=>this.Register()}
                                 // disabled={!this.state.cpassword}
                                 style={[style.button, { backgroundColor: this.state.cpassword != '' ? Colors.colorred : Colors.colorgrey }]}>
                                 <Text style={style.textcontnue}>Sign Up</Text>
