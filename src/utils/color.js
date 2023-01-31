@@ -9,6 +9,7 @@ export default class Colors {
     static  colorsky = '#007bff';
     static  colorgreen = '#28a745';
     static  coloryellow = '#ffc107';
+    static colorpurple= '#82027D';
     
     
     
