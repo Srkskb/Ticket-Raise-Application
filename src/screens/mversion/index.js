@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, StatusBar, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import Colors from '../../utils/color';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -9,13 +9,33 @@ export default function Mversion({ navigation }) {
 
     const [selectedDatabaseP, setDatabaseP] = useState();
     const [selectedProduct, setProduct] = useState();
+ const NameProduct =()=>{
+    var myHeaders = new Headers();
+myHeaders.append("Authorization", "Bearer BSNHKOhsmkTYowokmamskM001GAT");
+myHeaders.append("Cookie", "PHPSESSID=6a3d271223f79d67db893beea57b35f6");
 
+var requestOptions = {
+  method: 'GET',
+  headers: myHeaders,
+  redirect: 'follow'
+};
+
+fetch("https://bus.kibtechnologies.com/tickets-crm/api/V1/Service-Support-Domain/?full=all", requestOptions)
+  .then(response => response.json())
+  .then(result =>{ console.log(result)
+    setDatabaseP(result)
+})
+  .catch(error => console.log('error', error));
+ }
 
 
     const goback = () => {
         navigation.navigate('Mhome')
      };
-
+     useEffect(() => {
+        NameProduct();
+        // navigation.addListener("focus", () => SupportDomin());
+      }, []);
 
     return (
         <View style={{ flex: 1 }}>
@@ -40,10 +60,14 @@ export default function Mversion({ navigation }) {
                                 style={style.pickerview}
                                 selectedValue={selectedDatabaseP}
                                 onValueChange={(itemValue) =>
+                                    
                                     setDatabaseP(itemValue)
-                                }>
-                                <Picker.Item label="Select One" value="Select One" />
-                                <Picker.Item label="Microsoft" value="Microsoft" />
+                                    
+                                }
+                                >
+                                
+                                <Picker.Item label="Select One" value={setDatabaseP} />
+                                {/* <Picker.Item label="" value="Microsoft" /> */}
                             </Picker>
                         </View>
 

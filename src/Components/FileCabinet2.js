@@ -1,11 +1,15 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet,TouchableOpacity } from "react-native";
 import React from "react";
 import colors from "../utils/color";
 import { Remove, Edit, ViewButton } from "./buttons";
+import { Feather } from 'react-native-vector-icons/Feather';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 export default function FileCabinet2({
   access,
-  title,
+  Name,
   description,
+  Email,
+  Date,
   removePress,
   onPress,
   onPressEdit,
@@ -15,7 +19,7 @@ export default function FileCabinet2({
       <View style={{ flexDirection: "row" }}>
         <View style={styles.right_side}>
           <View style={styles.arrow_container}>
-            <Text style={styles.head_text}>{title}</Text>
+            <Text style={styles.head_text}>{Name}</Text>
             <Text style={styles.status_text}>{access}</Text>
           </View>
         </View>
@@ -23,8 +27,23 @@ export default function FileCabinet2({
       <View style={{padding:10}}>
             <Text style={styles.description}>{description}</Text>
             </View>
+            <View style={{padding:10}}>
+            <Text style={styles.description}>{Email}</Text>
+            </View>
+            <View style={{padding:10}}>
+            <Text style={styles.description}>{Date}</Text>
+            </View>
       <View style={styles.viewbutton}>
-        <Edit onPress={onPressEdit} />
+        {/* <Edit onPress={onPressEdit} /> */}
+        <View style={{justifyContent:'space-around'}}>
+          <TouchableOpacity>
+          <Text style={{fontSize:20,fontWeight:'500',borderRadius:10,borderWidth:1,textAlign:'center',
+          paddingHorizontal:10,backgroundColor:"#007bff",borderColor:"#007bff",color:"#ffffff"}}>
+            Edit
+          </Text>
+          </TouchableOpacity>
+        </View>
+       
         <View style={{ width: 40 }}></View>
         {/* <ViewButton
           title={"View Document"}
@@ -35,7 +54,15 @@ export default function FileCabinet2({
         /> */}
         <View style={{ width: 60 }}></View>
 
-        <Remove onPress={removePress} />
+        {/* <Remove onPress={removePress} /> */}
+        <View style={{justifyContent:'space-around'}}>
+          <TouchableOpacity>
+        <Text style={{fontSize:20,fontWeight:'500',borderRadius:10,borderWidth:1,textAlign:'center',
+          paddingHorizontal:10,backgroundColor:"#821113",borderColor:"#821113",color:"#ffffff"}}>
+            Delete
+          </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -90,5 +117,21 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "100%",
     alignItems: "center",
+  },
+  containers: {
+    borderWidth: 1,
+    borderColor: colors.purple,
+    flexDirection: "row",
+    borderRadius: 3,
+    alignItems: "center",
+    padding: 5,
+    justifyContent: 'center',
+
+  },
+  edit_text: {
+    fontFamily: "Montserrat-Medium",
+    fontSize: 5,
+    color: colors.purple,
+    marginLeft: 5,
   },
 });

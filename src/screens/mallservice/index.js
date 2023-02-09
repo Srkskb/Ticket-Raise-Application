@@ -17,34 +17,50 @@
 //         }
 //     }
 //    GetSupportData =()=>{
-//     var data = JSON.stringify({
-//         "full": "all"
-//       });
+//     // var data = JSON.stringify({
+//     //     "full": "all"
+//     //   });
 
-//       var config = {
-//         method: 'get',
-//         url: 'https://bus.kibtechnologies.com/tickets-crm/api/V1/Service-Support-Domain/?full=all',
-//         headers: {
-//           'Authorization': 'Bearer BSNHKOhsmkTYowokmamskM001GAT',
-//           'Content-Type': 'application/json',
-//           'Cookie': 'PHPSESSID=407ba2576aef513e33d3f650a0b23f89'
-//         },
-//         // data : data
-//       };
+//     //   var config = {
+//     //     method: 'get',
+//     //     url: 'https://bus.kibtechnologies.com/tickets-crm/api/V1/Service-Support-Domain/?full=all',
+//     //     headers: {
+//     //       'Authorization': 'Bearer BSNHKOhsmkTYowokmamskM001GAT',
+//     //       'Content-Type': 'application/json',
+//     //       'Cookie': 'PHPSESSID=407ba2576aef513e33d3f650a0b23f89'
+//     //     },
+//     //     // data : data
+//     //   };
 
-//       axios(config)
-//       .then(function (response) {
-//         console.log(response.data);
-//         // if(response.data.status==200){
-//             this.setState({SupportData:response.data})
-//         // }
-//             // else{
-//             // this.setState({SupportData:[]})
-//         //   }
-//       })
-//       .catch(function (error) {
-//         console.log(error);
-//       });
+//     //   axios(config)
+//     //   .then(function (response) {
+//     //     console.log(response.data);
+//     //     // if(response.data.status==200){
+//     //         this.setState({SupportData:response.data})
+//     //     // }
+//     //         // else{
+//     //         // this.setState({SupportData:[]})
+//     //     //   }
+//     //   })
+//     //   .catch(function (error) {
+//     //     console.log(error);
+//     //   });
+//     var myHeaders = new Headers();
+// myHeaders.append("Authorization", "Bearer BSNHKOhsmkTYowokmamskM001GAT");
+// myHeaders.append("Cookie", "PHPSESSID=6a3d271223f79d67db893beea57b35f6");
+
+// var requestOptions = {
+//   method: 'GET',
+//   headers: myHeaders,
+//   redirect: 'follow'
+// };
+
+// fetch("https://bus.kibtechnologies.com/tickets-crm/api/V1/Service-Support-Domain/?full=all", requestOptions)
+//   .then(response => response.json())
+//   .then(result =>{ console.log(result)
+//        this.setState(SupportData(result))
+//   })
+//   .catch(error => console.log('error', error));
 //     }
 
 //     componentDidMount = async () => {
@@ -100,7 +116,7 @@
 //                 <>
 //                                   <View style={style.versionnameview}>
 //                                   <Text style={style.versiontextname}>Name :</Text>
-//                                   <Text style={style.versionnumtext}>  {this.state.mname}</Text>
+//                                   <Text style={style.versionnumtext}>  {list.name}</Text>
 //                               </View>
 
 //                               <View style={style.versionnameview}>
@@ -165,11 +181,14 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Dimensions
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import Colors from '../../utils/color';
+const { height, width } = Dimensions.get("window");
 import FileCabinet2 from '../../Components/FileCabinet2';
+import axios from 'axios';
 
 // create a component
 
@@ -190,18 +209,26 @@ export default function Mallservice(navigation) {
       'https://bus.kibtechnologies.com/tickets-crm/api/V1/Service-Support-Domain/?full=all',
       requestOptions,
     )
-      .then(response => response.text())
+      .then(response => response.json())
       .then(result => {
         console.log(result);
-        setFileCabinetData(result.data);
+        //response is wrong
+        setFileCabinetData(result);
       })
 
       .catch(error => console.log('error', error));
+
   };
+
+  const goack = () => {
+    navigation.navigate('Mhome')
+ };
   useEffect(() => {
     SupportDomin();
     // navigation.addListener("focus", () => SupportDomin());
   }, []);
+
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={Colors.colormaincolour} />
@@ -231,7 +258,7 @@ export default function Mallservice(navigation) {
             </View>
             <TouchableOpacity
               style={style.iconset}
-              onPress={() => console.log(setFileCabinetData())}>
+              onPress={() => console.log(fileCabinetData)}>
               <Feather
                 name={'search'}
                 size={22}
@@ -241,8 +268,9 @@ export default function Mallservice(navigation) {
           </View>
         </View>
       </View>
+      <View style={{paddingTop:width*0.2}}>
       <ScrollView
-        style={{ paddingHorizontal: 10 }}
+        style={{ paddingHorizontal: 10,paddingTop:10 }}
       >
         <View style={{ paddingHorizontal: 10 }}>
           {fileCabinetData === undefined ? (
@@ -251,13 +279,15 @@ export default function Mallservice(navigation) {
             </>
           ) : (
             <>
-              {fileCabinetData.map((list, index) => (
+             {fileCabinetData.map((list, index) => (
                 <FileCabinet2 key={index}
-                  title={list.name}
-                  description={list.location}
+                Name={list.name}
+                description={list.location}
+                Email={list.emailid}
+                Date={list.date}
                   onPressEdit={() =>
-                    navigation.navigate("Edit", {
-                      
+                    navigation.navigate("EditAssignment", {
+                      title: list,
                     })
                   }
                   removePress={() =>deleteEvent(list.id)}
@@ -266,7 +296,13 @@ export default function Mallservice(navigation) {
             </>
           )}
         </View>
+        <View style={{paddingBottom:width*0.2}}>
+
+</View>
       </ScrollView>
+  
+      </View>
+   
     </View>
   );
 }
