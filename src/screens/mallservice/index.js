@@ -220,9 +220,6 @@ export default function Mallservice(navigation) {
 
   };
 
-  const goack = () => {
-    navigation.navigate('Mhome')
- };
   useEffect(() => {
     SupportDomin();
     // navigation.addListener("focus", () => SupportDomin());
@@ -292,6 +289,7 @@ export default function Mallservice(navigation) {
                   }
                   removePress={() =>deleteEvent(list.id)}
                 />
+                
               ))}
             </>
           )}
