@@ -47,7 +47,7 @@ class Register extends React.Component {
         this.setState({ visible: !visible })
         this.setState({ iseye: !iseye })
     }
- Register(){
+ register(){
     var data = JSON.stringify({
         "CompanySRC": this.state.companysrc,
         "UserName": this.state.username,
@@ -224,7 +224,7 @@ class Register extends React.Component {
                                 </TouchableOpacity>
                             </View>
                           
-                            <TouchableOpacity onPress={()=>this.Register()}
+                            <TouchableOpacity onPress={()=>this.register()}
                                 // disabled={!this.state.cpassword}
                                 style={[style.button, { backgroundColor: this.state.cpassword != '' ? Colors.colorred : Colors.colorgrey }]}>
                                 <Text style={style.textcontnue}>Sign Up</Text>

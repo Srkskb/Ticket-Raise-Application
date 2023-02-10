@@ -19,7 +19,7 @@ export default function FileCabinet2({
       <View style={{ flexDirection: "row" }}>
         <View style={styles.right_side}>
           <View style={styles.arrow_container}>
-            <Text style={styles.head_text}>{Name}</Text>
+            <Text style={styles.head_text}>Name : {Name}</Text>
             <Text style={styles.status_text}>{access}</Text>
           </View>
         </View>
