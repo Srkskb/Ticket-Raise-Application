@@ -36,7 +36,7 @@ export default function FileCabinet2({
       <View style={styles.viewbutton}>
         {/* <Edit onPress={onPressEdit} /> */}
         <View style={{justifyContent:'space-around'}}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onPressEdit}>
           <Text style={{fontSize:20,fontWeight:'500',borderRadius:10,borderWidth:1,textAlign:'center',
           paddingHorizontal:10,backgroundColor:"#007bff",borderColor:"#007bff",color:"#ffffff"}}>
             Edit
@@ -56,7 +56,7 @@ export default function FileCabinet2({
 
         {/* <Remove onPress={removePress} /> */}
         <View style={{justifyContent:'space-around'}}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={removePress}>
         <Text style={{fontSize:20,fontWeight:'500',borderRadius:10,borderWidth:1,textAlign:'center',
           paddingHorizontal:10,backgroundColor:"#821113",borderColor:"#821113",color:"#ffffff"}}>
             Delete

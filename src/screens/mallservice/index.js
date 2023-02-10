@@ -192,7 +192,7 @@ import axios from 'axios';
 
 // create a component
 
-export default function Mallservice(navigation) {
+export default function Mallservice({navigation}) {
   const [fileCabinetData, setFileCabinetData] = useState([]);
   const SupportDomin = () => {
     var myHeaders = new Headers();
@@ -282,12 +282,12 @@ export default function Mallservice(navigation) {
                 description={list.location}
                 Email={list.emailid}
                 Date={list.date}
-                  onPressEdit={() =>
-                    navigation.navigate("EditAssignment", {
+                onPressEdit={()=>
+                    navigation.navigate("Meditservice", {
                       title: list,
                     })
                   }
-                  removePress={() =>deleteEvent(list.id)}
+                removePress={()=>deleteEvent(list.id)}
                 />
                 
               ))}

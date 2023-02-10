@@ -12,6 +12,7 @@ export default function Mversion({ navigation }) {
     const [studentsid, setStudentsid] = useState([])
     const [versionData, setVersionData] = useState([]);
     const [students, setStudents] = useState([])
+    const [products, setProducts] = useState([])
     const [studentId, setStudentId] = useState('')
     const [version ,setVersion]=useState("")
     const [selectedDatabaseP, setDatabaseP] = useState();
@@ -29,9 +30,10 @@ var requestOptions = {
 
 fetch("https://bus.kibtechnologies.com/tickets-crm/api/V1/Service-Support-Domain/?full=all", requestOptions)
   .then(response => response.json())
-  .then(result =>{ console.log(result)
-    // var students=result.data.map(i=>i.name)
-    setStudents(result.data)
+  .then(result =>{
+    console.log(result)
+    var students=result.map(i=>i.name)
+    setStudents(result)
     setStudentsid(students)
 })
   .catch(error => console.log('error', error));
@@ -55,6 +57,11 @@ fetch("https://bus.kibtechnologies.com/tickets-crm/api/V1/Service-Support-Domain
         }else{
           setStudentId(id)
         }
+    }
+    const getProducts=(item)=>{
+      var products=students.filter(i=>i.name==item)
+      console.log(products[0].products)
+      setProducts(products[0].products)
     }
 const AddVersion =()=>{
     var myHeaders = new Headers();
@@ -90,9 +97,10 @@ var requestOptions = {
 };
 
 fetch("https://bus.kibtechnologies.com/tickets-crm/api/V1/MasterSetupGET/?type=MS0", requestOptions)
-  .then(response => response.text())
-  .then(result => {console.log(result)
-    setVersionData(result.data);
+  .then(response => response.json())
+  .then(result => {
+    // console.log(result)
+    setVersionData(result);
 })
   .catch(error => console.log('error', error));
 }
@@ -116,11 +124,14 @@ fetch("https://bus.kibtechnologies.com/tickets-crm/api/V1/MasterSetupGET/?type=M
                         </View>
                         <View style={{marginHorizontal:20}} >
                         <Text style={style.textallselect}>Database Platform/Version</Text>
-                            <CommonDropdown  onSelect={(item,index)=>{studentid(item)}}/>
+                            <CommonDropdown data={studentsid} onSelect={(item,index)=>{
+                              console.log(item)
+                              getProducts(item)
+                            }}/>
                         </View>
       <View style={{marginHorizontal:20}} >
       <Text style={style.textallselect}>Products</Text>
-                            <CommonDropdown  onSelect={(item,index)=>{studentid(item)}}/>
+                            <CommonDropdown data={products} onSelect={(item,index)=>{console.log(item)}}/>
                         </View>
                                   <View style={{marginHorizontal:20}} >
                                   <Text style={style.versiontext}>Version</Text>
@@ -145,7 +156,7 @@ fetch("https://bus.kibtechnologies.com/tickets-crm/api/V1/MasterSetupGET/?type=M
                             <Text style={style.textadd}>All Version</Text>
                         </View>
 
-                        <View style={style.searchview}>
+                        {/*<View style={style.searchview}>
                             <Text style={style.versiontext}>Search</Text>
                             <View style={style.searchmainview}>
                                 <View style={{ width: '85%', }}>
@@ -161,7 +172,7 @@ fetch("https://bus.kibtechnologies.com/tickets-crm/api/V1/MasterSetupGET/?type=M
                                     />
                                 </TouchableOpacity>
                             </View>
-                        </View>
+                        </View>*/}
 
                         <View style={style.versionnameview}>
                             <Text style={style.versiontextname}>Version Name :</Text>

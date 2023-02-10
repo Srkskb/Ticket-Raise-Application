@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
       fontSize: 16,
       alignSelf: 'center',
       justifyContent: 'center',
-      color: color.black,
+      color: 'black',
       fontFamily:'Montserrat-Medium'
     },
     dropdown_style:{
