@@ -25,13 +25,13 @@ export default function FileCabinet2({
         </View>
       </View>
       <View style={{padding:10}}>
-            <Text style={styles.description}>{description}</Text>
+            <Text style={styles.description}>Location : {description}</Text>
             </View>
             <View style={{padding:10}}>
-            <Text style={styles.description}>{Email}</Text>
+            <Text style={styles.description}> Email : {Email}</Text>
             </View>
             <View style={{padding:10}}>
-            <Text style={styles.description}>{Date}</Text>
+            <Text style={styles.description}> Date: {Date}</Text>
             </View>
       <View style={styles.viewbutton}>
         {/* <Edit onPress={onPressEdit} /> */}
