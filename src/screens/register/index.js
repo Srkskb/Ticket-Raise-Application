@@ -75,6 +75,7 @@ class Register extends React.Component {
         // this.setState({loading:false})
          if(response.data.message=="success"){
           console.log("Register SuccessFully")
+          this.goHome()
         }
       })
       .catch(function (error) {
@@ -87,10 +88,6 @@ class Register extends React.Component {
                             });
       });
       
-        }
-        goHome(){
-          this.setState({showPop:false,lastName:"",firstName:"",email:"",password:"",confirmPassword:""})
-          this.props.navigation.navigate('Login')
         }
   
 
