@@ -71,11 +71,9 @@ class Register extends React.Component {
       
       axios(config)
       .then(function (response) {
-        // console.log(response.data.Message)
-        // this.setState({loading:false})
-         if(response.data.message=="success"){
-          console.log("Register SuccessFully")
-          this.goHome()
+        console.log(JSON.stringify(response.data));
+        if(response.data.message==200){
+            this.goHome()
         }
       })
       .catch(function (error) {

@@ -1,5 +1,6 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet,Dimensions } from "react-native";
 import Colors from "../../utils/color";
+const { height, width } = Dimensions.get("window");
 export default StyleSheet.create({
     icimgview: {
         width: '100%',
@@ -29,12 +30,13 @@ export default StyleSheet.create({
     },
     allviewversion:{
         width: '95%',
-        height: 350,
+        height: 45,
         marginTop: 30,
         alignSelf: 'center',
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: Colors.colormaincolour
+        borderColor: Colors.colorsky,
+        backgroundColor:Colors.colorsky,
 
     },
     addnewtextview: {

@@ -3,11 +3,14 @@ import { View, Text, StatusBar, TouchableOpacity, ScrollView, TextInput,Dimensio
 import Colors from '../../utils/color';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
+import Snack from '../../utils/snack';
 import { Picker } from '@react-native-picker/picker';
 import CommonDropdown from '../../Components/CommonDropdown';
 const { height, width } = Dimensions.get("window");
 import FileCabinet2 from '../../Components/FileCabinet2';
+import FileCab from '../../Components/FileCab';
 import style from './style';
+import axios from 'axios';
 export default function Mversion({ navigation }) {
     const [studentsid, setStudentsid] = useState([])
     const [versionData, setVersionData] = useState([]);
@@ -63,25 +66,33 @@ fetch("https://bus.kibtechnologies.com/tickets-crm/api/V1/Service-Support-Domain
       console.log(products[0].products)
       setProducts(products[0].products)
     }
-const AddVersion =()=>{
-    var myHeaders = new Headers();
-myHeaders.append("Content-Type", "Access-Control-Allow-Headers");
-myHeaders.append("Authorization", "Bearer BSNHKOhsmkTYowokmamskM001GAT");
-myHeaders.append("Cookie", "PHPSESSID=575b06676760eabcc859d39d2a4cd127");
+const AddVersion =(id)=>{
+    var data = JSON.stringify({
+        "SSdomainID": "10",
+        "Product": products,
+        "Name": studentId,
+        "Type": "MS0"
+      });
 
-var raw = "{\r\n\"SSdomainID\": \"10\",\r\n\"Product\": \"DatabaseS\",\r\n\"Name\": \"Oracle 10g R1(10.1.0.2)S\",\r\n\"Type\": \"MS0\"\r\n}";
-
-var requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: raw,
-  redirect: 'follow'
-};
-
-fetch("https://bus.kibtechnologies.com/tickets-crm/api/V1/MasterSetupInsert/", requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
+    var config = {
+      method: 'post',
+    maxBodyLength: Infinity,
+      url: 'https://bus.kibtechnologies.com/tickets-crm/api/V1/MasterSetupInsert/',
+      headers: { 
+        'Content-Type': 'Access-Control-Allow-Headers', 
+        'Authorization': 'Bearer BSNHKOhsmkTYowokmamskM001GAT', 
+        'Cookie': 'PHPSESSID=87528de06045fd51e0b77932464ac03a'
+      },
+      data : data
+    };
+    
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 }
 
 const VersionList =()=>{
@@ -102,6 +113,28 @@ fetch("https://bus.kibtechnologies.com/tickets-crm/api/V1/MasterSetupGET/?type=M
     // console.log(result)
     setVersionData(result);
 })
+  .catch(error => console.log('error', error));
+}
+
+const deleteEvent =(id)=>{
+  const loginUID = localStorage.getItem("loginUID");
+  var myHeaders = new Headers();
+myHeaders.append("Content-Type", "Access-Control-Allow-Headers");
+myHeaders.append("Authorization", "Bearer BSNHKOhsmkTYowokmamskM001GAT");
+myHeaders.append("Cookie", "PHPSESSID=87528de06045fd51e0b77932464ac03a");
+
+var raw = "{\r\n\"Id\": \"10\",\r\n\"Type\": \"MS0\"\r\n}";
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch("https://bus.kibtechnologies.com/tickets-crm/api/V1/MasterSetupDelete/?Id=${id}", requestOptions)
+  .then(response => response.json())
+  .then(result => console.log(result))
   .catch(error => console.log('error', error));
 }
 
@@ -155,56 +188,44 @@ fetch("https://bus.kibtechnologies.com/tickets-crm/api/V1/MasterSetupGET/?type=M
                         <View style={style.addnewtextview}>
                             <Text style={style.textadd}>All Version</Text>
                         </View>
-
-                        {/*<View style={style.searchview}>
-                            <Text style={style.versiontext}>Search</Text>
-                            <View style={style.searchmainview}>
-                                <View style={{ width: '85%', }}>
-                                    <TextInput placeholder='Search' placeholderTextColor={Colors.colormaincolour}
-                                        onChangeText={(email) => this.setState({ email: email })}
-                                        style={style.textinputsearch}
-                                    />
-                                </View>
-                                <TouchableOpacity style={style.iconset}>
-                                    <Feather name={'search'} size={22} style={{ color: Colors.colormaincolour }}
-                                      onPress={() => console.log(versionData)}
-                                    
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                        </View>*/}
-
-                        <View style={style.versionnameview}>
-                            <Text style={style.versiontextname}>Version Name :</Text>
-                            <Text style={style.versionnumtext}>  V.4</Text>
-                        </View>
-
-                        <View style={style.versionnameview}>
-                            <Text style={style.versiontextname}>Date :</Text>
-                            <Text style={style.versionnumtext}> 2022-12-30</Text>
-                        </View>
-
-                        <View style={style.versionnameview}>
-                            <Text style={style.versiontextname}>Time :</Text>
-                            <Text style={style.versionnumtext}>  12:39:52</Text>
-                        </View>
-
-                        <View style={style.Actionbtnmainview}>
-                            <View>
-                                <Text style={style.versiontextname}>Action :</Text>
-                            </View>
-                            <TouchableOpacity style={style.btnviewedit}>
-                                <Text style={style.textadd}>Edit</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={style.btnviewdelete}>
-                                <Text style={style.textadd}>Delete</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                    </ScrollView>
+                        </ScrollView>
                 </View>
 
+<View style={{paddingTop:width*0.1}}>
+      <ScrollView
+        style={{ paddingHorizontal: 10,paddingTop:10 }}
+      >
+        <View style={{ paddingHorizontal: 10 }}>
+          {versionData === undefined ? (
+            <>
+              {/* <NoDataFound /> */}
+            </>
+          ) : (
+            <>
+             {versionData.map((list, index) => (
+                <FileCab key={index}
+                Name={list.name}
+                description={list.SSDomainProduct}
+                Email={list.SSDomain}
+                Date={list.date}
+                onPressEdit={()=>
+                    navigation.navigate("Meditservice", {
+                      title: list,
+                    })
+                  }
+                removePress={()=>deleteEvent(list.id)}
+                />
+                
+              ))}
+            </>
+          )}
+        </View>
+        <View style={{paddingBottom:width*0.2}}>
 
+</View>
+      </ScrollView>
+  
+      </View>
                 </ScrollView>
             </View>
         </View>
