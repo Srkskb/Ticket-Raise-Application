@@ -18,8 +18,8 @@ export default function Mversion({ navigation }) {
     const [products, setProducts] = useState([])
     const [studentId, setStudentId] = useState('')
     const [version ,setVersion]=useState("")
-    const [selectedDatabaseP, setDatabaseP] = useState();
-    const [selectedProduct, setProduct] = useState();
+    const [selectedDatabaseP, setDatabaseP] = useState('');
+    const [selectedProduct, setProduct] = useState('');
  const NameProduct =()=>{
     var myHeaders = new Headers();
 myHeaders.append("Authorization", "Bearer BSNHKOhsmkTYowokmamskM001GAT");
@@ -69,10 +69,11 @@ fetch("https://bus.kibtechnologies.com/tickets-crm/api/V1/Service-Support-Domain
 const AddVersion =(id)=>{
     var data = JSON.stringify({
         "SSdomainID": "10",
-        "Product": products,
-        "Name": studentId,
+        "Product": selectedProduct,
+        "Name": selectedDatabaseP,
         "Type": "MS0"
       });
+    console.log(data)
 
     var config = {
       method: 'post',
@@ -159,12 +160,16 @@ fetch("https://bus.kibtechnologies.com/tickets-crm/api/V1/MasterSetupDelete/?Id=
                         <Text style={style.textallselect}>Database Platform/Version</Text>
                             <CommonDropdown data={studentsid} onSelect={(item,index)=>{
                               console.log(item)
+                              setDatabaseP(item)
                               getProducts(item)
-                            }}/>
+                            }} defaultValue={selectedDatabaseP}/>
                         </View>
       <View style={{marginHorizontal:20}} >
       <Text style={style.textallselect}>Products</Text>
-                            <CommonDropdown data={products} onSelect={(item,index)=>{console.log(item)}}/>
+                            <CommonDropdown data={products} onSelect={(item,index)=>{
+                              console.log(item)
+                              setProduct(item)
+                            }} defaultValue={selectedProduct}/>
                         </View>
                                   <View style={{marginHorizontal:20}} >
                                   <Text style={style.versiontext}>Version</Text>
